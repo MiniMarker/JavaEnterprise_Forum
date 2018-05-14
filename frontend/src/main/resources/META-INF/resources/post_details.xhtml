@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+>
+
+<ui:composition template="layout.xhtml">
+
+    <ui:define name="title">PostDetails</ui:define>
+    <ui:define name="header">Categories</ui:define>
+
+    <ui:define name="topLinks">
+        <a href="posts.xhtml?category=${category.id}">Back</a>
+    </ui:define>
+
+    <ui:define name="content">
+
+        <c:set var="post" value="#{forumController.getPost(param['post'])}"/>
+        <c:set var="category" value="#{forumController.getPost(param['post']).category}"/>
+        <c:set var="commentsInPost" value="#{forumController.getAllCommentsInPost(param['post'])}"/>
+
+        <h1>${post.title}</h1>
+
+
+        <c:choose>
+            <c:when test="#{empty param['post']}">
+                <p>No post selected!</p>
+            </c:when>
+            <c:otherwise>
+
+                <h3>#{post.text}</h3>
+
+                <c:forEach var="comment" items="#{commentsInPost}">
+                    <p>#{comment.parentUser.email} -> #{comment.text}</p>
+                </c:forEach>
+
+                <hr/>
+
+                <h3>ADD A NEW COMMENT</h3>
+
+                <h:form>
+                    <h:inputTextarea class="txtField" value="#{forumController.commentText}"/>
+                    <h:commandButton value="Add comment" action="#{forumController.createComment(param['post'])}"/>
+                </h:form>
+
+            </c:otherwise>
+        </c:choose>
+    </ui:define>
+</ui:composition>
+</html>

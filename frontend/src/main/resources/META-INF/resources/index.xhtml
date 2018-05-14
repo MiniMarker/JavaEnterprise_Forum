@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+>
+
+
+<ui:composition template="layout.xhtml">
+
+    <ui:define name="title">Forum</ui:define>
+
+    <ui:define name="topLinks">
+        <a href="admin.xhtml">Admin</a>
+        <a href="login/registrer.xhtml">Registrer new user</a>
+        <a href="login/admin.xhtml">Log in</a>
+    </ui:define>
+
+    <ui:define name="header">Categories</ui:define>
+
+    <ui:define name="content">
+
+        <c:choose>
+            <c:when test="#{forumController.allCategories.size() == 0}">
+                <h3>Categories is empty</h3>
+            </c:when>
+
+            <c:otherwise>
+
+                <h3>Select a category</h3>
+
+                <c:forEach var="category" items="#{forumController.allCategories}">
+                    <h:form>
+                        <h:commandButton class="waves-effect waves-light btn" value="#{category.name}" action="#{forumController.selectCategory(category.getId())}"/>
+                        <br/>
+                    </h:form>
+                </c:forEach>
+
+                <p>Total amount of categories: <span style="font-weight: bold">#{forumController.allCategories.size()}</span></p>
+            </c:otherwise>
+        </c:choose>
+
+    </ui:define>
+
+</ui:composition>
+
+</html>

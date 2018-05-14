@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+>
+
+<ui:composition template="layout.xhtml">
+
+    <ui:define name="title">Forum</ui:define>
+
+    <ui:define name="topLinks">
+        <a href="index.xhtml">Home</a>
+    </ui:define>
+
+    <ui:define name="header">Posts</ui:define>
+
+    <ui:define name="content">
+
+        <c:set var="category" value="#{forumController.getCategory(param['category'])}"/>
+
+        <h1>#{category.name}</h1>
+
+        <c:choose>
+            <c:when test="#{empty param['category']}">
+                <p>No category selected!</p>
+            </c:when>
+
+            <c:otherwise>
+                <c:forEach var="post" items="#{forumController.getAllPostsInCategory(param['category'])}">
+
+                    <c:set var="postId" value="#{post.getId()}"/>
+
+                    <a href="post_details.xhtml?post=#{postId}">
+                        <button>#{post.title}</button>
+                    </a>
+                    <br/>
+                </c:forEach>
+
+            </c:otherwise>
+
+        </c:choose>
+
+    </ui:define>
+
+</ui:composition>
+</html>

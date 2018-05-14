@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:f="http://java.sun.com/jsf/core"
+>
+
+<ui:composition template="layout.xhtml">
+
+    <ui:define name="title">Admin</ui:define>
+
+    <ui:define name="topLinks">
+        <a href="index.xhtml">Back</a>
+    </ui:define>
+
+    <ui:define name="header">Admin</ui:define>
+
+    <ui:define name="content">
+
+        <div>
+            <h3>Categories</h3>
+
+            <h:dataTable var="category" value="#{forumController.allCategories}">
+                <h:column>
+                    <f:facet name="header">Id</f:facet>
+                    <h:outputText value="#{category.id}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Name</f:facet>
+                    <h:outputText value="#{category.name}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Num posts</f:facet>
+                    <h:outputText value="#{category.postList.size()}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Actions</f:facet>
+                    <h:form>
+                        <h:commandButton value="Delete" action="#{adminController.deleteCategory(category.id)}"
+                                         class="deleteButton"/>
+                    </h:form>
+                </h:column>
+            </h:dataTable>
+
+            <h:form>
+                <table>
+                    <tr>
+                        <th>Text</th>
+                        <th>Action</th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h:inputTextarea class="txtField" value="#{adminController.adminCategoryTextField}"/>
+                        </td>
+                        <td>
+                            <h:commandButton value="Add" action="#{adminController.createCategory}" class="addBtn"/>
+                        </td>
+                    </tr>
+                </table>
+            </h:form>
+        </div>
+
+        <div>
+            <h3>Posts</h3>
+
+            <h:dataTable var="post" value="#{forumController.allPosts}">
+                <h:column>
+                    <f:facet name="header">Id</f:facet>
+                    <h:outputText value="#{post.id}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Category</f:facet>
+                    <h:outputText value="#{post.category.name}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Title</f:facet>
+                    <h:outputText value="#{post.title}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Text</f:facet>
+                    <h:outputText value="#{post.text}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Num comments</f:facet>
+                    <h:outputText value="#{post.commentList.size()}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Date</f:facet>
+                    <h:outputText value="#{post.date}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">User</f:facet>
+                    <h:outputText value="#{post.parentUser.email}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Actions</f:facet>
+                    <h:form>
+                        <h:commandButton value="Delete" action="#{adminController.deletePost(post.id)}"
+                                         class="deleteButton"/>
+                    </h:form>
+                </h:column>
+            </h:dataTable>
+
+            <h:form>
+                <table>
+                    <tr>
+                        <th>Title</th>
+                        <th>Text</th>
+                        <th>Parent Category</th>
+                        <th>Parent User</th>
+                        <th>Action</th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h:inputTextarea class="txtField" value="#{adminController.adminPostTitle}"/>
+                        </td>
+
+                        <td>
+                            <h:inputTextarea class="txtField" value="#{adminController.adminPostTextField}"/>
+                        </td>
+
+                        <td>
+                            <h:selectOneMenu value="#{adminController.adminPostCategory}">
+                                <c:forEach var="category" items="#{forumController.allCategories}">
+                                    <f:selectItem itemValue="#{category.id}" itemLabel="#{category.name}"/>
+                                </c:forEach>
+                            </h:selectOneMenu>
+                        </td>
+
+                        <td>
+                            <h:selectOneMenu class="input-field col s12" value="#{adminController.adminPostUser}">
+                                <c:forEach var="user" items="#{forumController.allUsers}">
+                                    <f:selectItem itemValue="#{user.id}" itemLabel="userId: #{user.id}"/>
+                                </c:forEach>
+                            </h:selectOneMenu>
+                        </td>
+
+                        <td>
+                            <h:commandButton value="Add" action="#{adminController.createPost}" class="addBtn"/>
+                        </td>
+                    </tr>
+                </table>
+
+            </h:form>
+        </div>
+
+        <div>
+            <h3>Comments</h3>
+            <h:dataTable var="comment" value="#{forumController.allComments}">
+                <h:column>
+                    <f:facet name="header">Id</f:facet>
+                    <h:outputText value="#{comment.id}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Text</f:facet>
+                    <h:outputText value="#{comment.text}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Parent post</f:facet>
+                    <h:outputText value="#{comment.parentPost.title}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Parent user</f:facet>
+                    <h:outputText value="#{comment.parentUser.email}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Actions</f:facet>
+                    <h:form>
+                        <h:commandButton value="Delete" action="#{adminController.deleteComment(comment.id)}"
+                                         class="deleteButton"/>
+                    </h:form>
+                </h:column>
+            </h:dataTable>
+            <h:form>
+                <table>
+                    <tr>
+                        <th>Text</th>
+                        <th>Parent Post</th>
+                        <th>Parent User</th>
+                        <th>Action</th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h:inputTextarea class="txtField" value="#{adminController.adminCommentText}"/>
+                        </td>
+
+                        <td>
+                            <h:selectOneMenu value="#{adminController.adminCommentPost}">
+                                <c:forEach var="post" items="#{forumController.allPosts}">
+                                    <f:selectItem itemValue="#{post.id}" itemLabel="#{post.title}"/>
+                                </c:forEach>
+                            </h:selectOneMenu>
+                        </td>
+
+                        <td>
+                            <h:selectOneMenu value="#{adminController.adminCommentUser}">
+                                <c:forEach var="user" items="#{forumController.allUsers}">
+                                    <f:selectItem itemValue="#{user.id}" itemLabel="userId: #{user.id}"/>
+                                </c:forEach>
+                            </h:selectOneMenu>
+                        </td>
+
+                        <td>
+                            <h:commandButton value="Add" action="#{adminController.createComment}" class="addBtn"/>
+                        </td>
+                    </tr>
+                </table>
+            </h:form>
+        </div>
+
+        <div>
+            <h3>Users</h3>
+
+            <h:dataTable var="user" value="#{forumController.allUsers}">
+                <h:column>
+                    <f:facet name="header">Id</f:facet>
+                    <h:outputText value="#{user.id}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Firstname</f:facet>
+                    <h:outputText value="#{user.firstName}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Surname</f:facet>
+                    <h:outputText value="#{user.surName}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Email</f:facet>
+                    <h:outputText value="#{user.email}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Counter</f:facet>
+                    <h:outputText value="#{user.counter}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Password</f:facet>
+                    <h:outputText value="#{user.password}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Actions</f:facet>
+                    <h:form>
+                        <h:commandButton value="Delete" action="#{adminController.deleteUser(user.id)}"
+                                         class="deleteButton"/>
+                    </h:form>
+                </h:column>
+            </h:dataTable>
+            <h:form>
+                <table>
+                    <tr>
+                        <th>Firstname</th>
+                        <th>Surname</th>
+                        <th>Email</th>
+                        <th>Password</th>
+                        <th>Action</th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h:inputTextarea class="txtField" value="#{adminController.adminUserFirstName}"/>
+                        </td>
+                        <td>
+                            <h:inputTextarea class="txtField" value="#{adminController.adminUserSurName}"/>
+                        </td>
+                        <td>
+                            <h:inputTextarea class="txtField" value="#{adminController.adminUserEmail}"/>
+                        </td>
+                        <td>
+                            <h:inputTextarea class="txtField" value="#{adminController.adminUserPassword}"/>
+                        </td>
+                        <td>
+                            <h:commandButton value="Add" action="#{adminController.createUser}"/>
+                        </td>
+                    </tr>
+                </table>
+            </h:form>
+        </div>
+
+
+    </ui:define>
+
+</ui:composition>
+
+</html>
