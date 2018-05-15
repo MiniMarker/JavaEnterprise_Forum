@@ -19,21 +19,20 @@
 
     <ui:define name="content">
 
-        <c:set var="category" value="#{forumController.getCategory(param['category'])}"/>
 
-        <h1>#{category.name}</h1>
+        <h1>#{postController.selectedCategory.name}</h1>
 
         <c:choose>
-            <c:when test="#{empty param['category']}">
+            <c:when test="#{postController.selectedCategoryId == null}">
                 <p>No category selected!</p>
             </c:when>
 
             <c:otherwise>
-                <c:forEach var="post" items="#{forumController.getAllPostsInCategory(param['category'])}">
+                <c:forEach var="post" items="#{postController.getAllPostsInCategory()}">
 
                     <c:set var="postId" value="#{post.getId()}"/>
 
-                    <a href="post_details.xhtml?post=#{postId}">
+                    <a href="#{commentsController.openPostDetailsPage(post.id)}">
                         <button>#{post.title}</button>
                     </a>
                     <br/>

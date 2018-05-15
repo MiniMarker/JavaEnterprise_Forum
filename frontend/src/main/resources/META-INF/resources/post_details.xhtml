@@ -13,27 +13,23 @@
     <ui:define name="header">Categories</ui:define>
 
     <ui:define name="topLinks">
-        <a href="posts.xhtml?category=${category.id}">Back</a>
+        <a href="posts.xhtml?faces-redirect-true">Back</a>
     </ui:define>
 
     <ui:define name="content">
-
-        <c:set var="post" value="#{forumController.getPost(param['post'])}"/>
-        <c:set var="category" value="#{forumController.getPost(param['post']).category}"/>
-        <c:set var="commentsInPost" value="#{forumController.getAllCommentsInPost(param['post'])}"/>
 
         <h1>${post.title}</h1>
 
 
         <c:choose>
-            <c:when test="#{empty param['post']}">
+            <c:when test="#{commentsController.selectedPostId == null}">
                 <p>No post selected!</p>
             </c:when>
             <c:otherwise>
 
                 <h3>#{post.text}</h3>
 
-                <c:forEach var="comment" items="#{commentsInPost}">
+                <c:forEach var="comment" items="#{commentsController.allCommentsInPost}">
                     <p>#{comment.parentUser.email} -> #{comment.text}</p>
                 </c:forEach>
 
@@ -42,8 +38,8 @@
                 <h3>ADD A NEW COMMENT</h3>
 
                 <h:form>
-                    <h:inputTextarea class="txtField" value="#{forumController.commentText}"/>
-                    <h:commandButton value="Add comment" action="#{forumController.createComment(param['post'])}"/>
+                    <h:inputTextarea class="txtField" value="#{commentsController.commentText}"/>
+                    <h:commandButton value="Add comment" action="#{commentsController.createComment()}"/>
                 </h:form>
 
             </c:otherwise>

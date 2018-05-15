@@ -23,7 +23,7 @@
     <ui:define name="content">
 
         <c:choose>
-            <c:when test="#{forumController.allCategories.size() == 0}">
+            <c:when test="#{categoryController.allCategories.size() == 0}">
                 <h3>Categories is empty</h3>
             </c:when>
 
@@ -31,14 +31,14 @@
 
                 <h3>Select a category</h3>
 
-                <c:forEach var="category" items="#{forumController.allCategories}">
+                <c:forEach var="category" items="#{categoryService.allCategories}">
                     <h:form>
-                        <h:commandButton class="waves-effect waves-light btn" value="#{category.name}" action="#{forumController.selectCategory(category.getId())}"/>
+                        <h:commandButton class="waves-effect waves-light btn" value="#{category.name}" action="#{postController.openPostPage(category.id)}"/>
                         <br/>
                     </h:form>
                 </c:forEach>
 
-                <p>Total amount of categories: <span style="font-weight: bold">#{forumController.allCategories.size()}</span></p>
+                <p>Total amount of categories: <span style="font-weight: bold">#{categoryController.allCategories.size()}</span></p>
             </c:otherwise>
         </c:choose>
 
