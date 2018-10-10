@@ -12,3 +12,4 @@ This is not entirely finished due to lack of time.
 ## Unfinished parts
 - Login
 - Signup
+- No Selenium tests
